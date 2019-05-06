@@ -8,6 +8,6 @@ class Program
     [STAThread] 
     static void Main(string[] args)
     {
-        var dataProvider = new SerialDataProvider("COM3");
+        var dataProvider = new SerialDataProvider("COM5");
     } 
 }

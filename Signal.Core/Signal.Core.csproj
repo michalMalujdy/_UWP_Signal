@@ -38,8 +38,12 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Domain\DataProviding\Reading.cs" />
+        <Compile Include="Domain\DataProviding\ReadingsMessage.cs" />
+        <Compile Include="Domain\DataProviding\Serial.cs" />
+        <Compile Include="Domain\DataSaving\CsvSaver.cs" />
+        <Compile Include="Domain\Session.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Services\IDataProvider.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
