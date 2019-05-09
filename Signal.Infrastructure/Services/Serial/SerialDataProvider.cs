@@ -1,21 +1,24 @@
 using System;
 using System.Diagnostics;
 using System.IO.Ports;
+using Newtonsoft.Json;
+using Signal.Core.Domain.DataProviding;
+using Signal.Core.Services;
 
 namespace Signal.Infrastructure.Services.Serial
 {
-    public class SerialDataProvider
+    public class SerialDataProvider : ISerialDataProvider
     {
-        public event EventHandler DataReceived;
+        public event EventHandler<ReadingMessageReceivedEventArgs> DataReceived;
 
-        private readonly SerialPort _serialPort;
-        
-        public SerialDataProvider(string portName)
+        private SerialPort _serialPort;
+
+        public void Open(string portName)
         {
-            _serialPort = new SerialPort(portName)
+            _serialPort = new SerialPort()
             {
                 BaudRate = 9600,
-                PortName = "COM3",
+                PortName = portName,
                 Handshake = Handshake.None,
                 RtsEnable = true,
                 DtrEnable = true
@@ -25,8 +28,10 @@ namespace Signal.Infrastructure.Services.Serial
             _serialPort.DataReceived += DataReceivedHandler;
         
             Console.WriteLine($"Serial port {portName} is waiting...");
-            Console.WriteLine();
-            Console.ReadKey();
+        }
+
+        public void Close()
+        {
             _serialPort.Close();
         }
 
@@ -34,7 +39,10 @@ namespace Signal.Infrastructure.Services.Serial
         {
             var message = _serialPort.ReadExisting();
             Console.WriteLine(message);
-            //DataReceived?.Invoke(this, e);
+            
+            var readingsMessage = JsonConvert.DeserializeObject<ReadingsMessage>(message);
+            var readingsEvent = new ReadingMessageReceivedEventArgs() {ReadingsMessage = readingsMessage};
+            DataReceived?.Invoke(this, readingsEvent);
         }
     }
 }
