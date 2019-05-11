@@ -38,6 +38,7 @@ namespace Signal.Core.Domain
                 return;
             
             _serial.DataProvider.DataReceived -= DataReceivedHandler;
+            _serial.DataProvider.Close();
             
             _readingsSaver.Save($"./sensors_saved_data/{GetDirectoryName()}", ReadingsMessages, "Lorem ipsum\nDolos amen");
             
