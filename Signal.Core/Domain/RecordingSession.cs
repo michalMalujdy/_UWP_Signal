@@ -39,7 +39,7 @@ namespace Signal.Core.Domain
             
             _serial.DataProvider.DataReceived -= DataReceivedHandler;
             
-            _readingsSaver.Save($"./{GetFilename()}.csv", ReadingsMessages);
+            _readingsSaver.Save($"./sensors_saved_data/{GetFilename()}.csv", ReadingsMessages);
             
             ReadingsMessages = new List<ReadingsMessage>();
             IsRunning = false;
@@ -57,7 +57,7 @@ namespace Signal.Core.Domain
         {
             var now = DateTimeOffset.Now;
 
-            return $"{now.Second}_{now.Minute}_{now.Hour}_{now.Day}_{now.Month}_{now.Year}_{now.ToUnixTimeSeconds()}";
+            return $"{now.Hour}-{now.Minute}-{now.Second}_{now.Day}-{now.Month}-{now.Year}_{now.ToUnixTimeSeconds()}";
         }
     }
 }
