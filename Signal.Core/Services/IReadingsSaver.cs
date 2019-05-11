@@ -7,6 +7,6 @@ namespace Signal.Core.Services
 {
     public interface IReadingsSaver
     {
-        Task Save(string filename, ICollection<ReadingsMessage> readingsMessages);
+        Task Save(string directory, ICollection<ReadingsMessage> readingsMessages, string comment = null);
     }
 }

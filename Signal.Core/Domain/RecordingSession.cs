@@ -39,7 +39,7 @@ namespace Signal.Core.Domain
             
             _serial.DataProvider.DataReceived -= DataReceivedHandler;
             
-            _readingsSaver.Save($"./sensors_saved_data/{GetFilename()}.csv", ReadingsMessages);
+            _readingsSaver.Save($"./sensors_saved_data/{GetDirectoryName()}", ReadingsMessages, "Lorem ipsum\nDolos amen");
             
             ReadingsMessages = new List<ReadingsMessage>();
             IsRunning = false;
@@ -53,7 +53,7 @@ namespace Signal.Core.Domain
             }
         }
 
-        private string GetFilename()
+        private string GetDirectoryName()
         {
             var now = DateTimeOffset.Now;
 

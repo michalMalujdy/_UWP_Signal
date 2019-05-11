@@ -3,7 +3,6 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Signal.Core.Domain.DataProviding;
 using Signal.Core.Domain.DataProviding.Serial.Message;
 using Signal.Core.Services;
 
@@ -11,16 +10,22 @@ namespace Signal.Infrastructure.Services.FileWriter
 {
     public class ReadingsCsvSaver : IReadingsSaver
     {
-        public async Task Save(string filename, ICollection<ReadingsMessage> readingsMessages)
+        public async Task Save(string directory, ICollection<ReadingsMessage> readingsMessages, string comment = null)
         {
-            CreateDirectoriesIfDontExist(filename);
             SetDotFloatingPointSeparator();
-            await WriteReadingsToFile(filename, readingsMessages);
+            
+           await WriteReadingsToFile(directory, readingsMessages);
+
+            if (comment != null)
+                await WriteCommentToFile(directory, comment);
         }
 
-        private async Task WriteReadingsToFile(string filename, ICollection<ReadingsMessage> readingsMessages)
+        private async Task WriteReadingsToFile(string directory, ICollection<ReadingsMessage> readingsMessages)
         {
-            using (var writer = new StreamWriter(new FileStream(filename, FileMode.Create, FileAccess.Write)))
+            var readingsFilepath = $"{directory}\\sensors_data.csv";
+            CreateDirectoriesIfDontExist(readingsFilepath);
+            
+            using (var writer = new StreamWriter(new FileStream(readingsFilepath, FileMode.Create, FileAccess.Write)))
             {
                 await WriteHeaderAsync(writer);
 
@@ -32,8 +37,17 @@ namespace Signal.Infrastructure.Services.FileWriter
                         await writer.WriteAsync(line);
                     }
                 }
+            }
+        }
 
-                await writer.FlushAsync();
+        private async Task WriteCommentToFile(string directory, string comment)
+        {
+            var commentFilepath = $"{directory}\\comment.txt";
+            CreateDirectoriesIfDontExist(commentFilepath);
+
+            using (var writer = new StreamWriter(new FileStream(commentFilepath, FileMode.Create, FileAccess.Write)))
+            {
+                await writer.WriteAsync(comment);
             }
         }
 
@@ -42,9 +56,9 @@ namespace Signal.Infrastructure.Services.FileWriter
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
         }
 
-        private void CreateDirectoriesIfDontExist(string filename)
+        private void CreateDirectoriesIfDontExist(string path)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(filename));
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
         }
 
         private async Task WriteHeaderAsync(StreamWriter writer)

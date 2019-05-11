@@ -25,7 +25,7 @@ class Program
             
             session.Start("COM5");
 
-            var task = Task.Run(async () => { await Task.Delay(17000); });
+            var task = Task.Run(async () => { await Task.Delay(6000); });
             task.Wait();
             
             session.StopAndSave();
