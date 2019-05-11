@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Signal.Core.Domain.DataProviding
+namespace Signal.Core.Domain.DataProviding.Serial.Message
 {
     public class ReadingsMessage
     {

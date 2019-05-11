@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Signal.Core.Domain.DataProviding;
+using Signal.Core.Domain.DataProviding.Serial;
+using Signal.Core.Domain.DataProviding.Serial.Message;
 using Signal.Core.Services;
 
 namespace Signal.Core.Domain
@@ -11,10 +14,12 @@ namespace Signal.Core.Domain
             = new List<ReadingsMessage>();
 
         private readonly Serial _serial;
+        private readonly IReadingsSaver _readingsSaver;
 
-        public RecordingSession(Serial serial)
+        public RecordingSession(Serial serial, IReadingsSaver readingsSaver)
         {
             _serial = serial;
+            _readingsSaver = readingsSaver;
         }
         
         public void Start(string portName)
@@ -27,9 +32,14 @@ namespace Signal.Core.Domain
             _serial.DataProvider.DataReceived += DataReceivedHandler;
         }
 
-        public void StopAndSave(string filename)
+        public void StopAndSave()
         {
-            // TODO Write ReadingsMessages to csv file
+            if (!IsRunning)
+                return;
+            
+            _serial.DataProvider.DataReceived -= DataReceivedHandler;
+            
+            _readingsSaver.Save($"./{GetFilename()}.csv", ReadingsMessages);
             
             ReadingsMessages = new List<ReadingsMessage>();
             IsRunning = false;
@@ -37,7 +47,17 @@ namespace Signal.Core.Domain
 
         private void DataReceivedHandler(object sender, ReadingMessageReceivedEventArgs e)
         {
-            ReadingsMessages.Add(e.ReadingsMessage);
+            foreach (var readingsMessage in e.ReadingsMessages)
+            {
+                ReadingsMessages.Add(readingsMessage);
+            }
+        }
+
+        private string GetFilename()
+        {
+            var now = DateTimeOffset.Now;
+
+            return $"{now.Second}_{now.Minute}_{now.Hour}_{now.Day}_{now.Month}_{now.Year}_{now.ToUnixTimeSeconds()}";
         }
     }
 }

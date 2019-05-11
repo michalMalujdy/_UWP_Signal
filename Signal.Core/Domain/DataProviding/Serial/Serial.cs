@@ -1,6 +1,6 @@
 using Signal.Core.Services;
 
-namespace Signal.Core.Domain.DataProviding
+namespace Signal.Core.Domain.DataProviding.Serial
 {
     public class Serial
     {

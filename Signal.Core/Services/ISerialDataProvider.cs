@@ -1,5 +1,6 @@
 using System;
 using Signal.Core.Domain.DataProviding;
+using Signal.Core.Domain.DataProviding.Serial.Message;
 
 namespace Signal.Core.Services
 {

@@ -1,4 +1,4 @@
-namespace Signal.Core.Domain.DataProviding
+namespace Signal.Core.Domain.DataProviding.Serial.Message
 {
     public class Reading
     {

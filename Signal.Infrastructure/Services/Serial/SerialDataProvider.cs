@@ -1,8 +1,11 @@
 using System;
 using System.Diagnostics;
 using System.IO.Ports;
+using System.Text;
 using Newtonsoft.Json;
 using Signal.Core.Domain.DataProviding;
+using Signal.Core.Domain.DataProviding.Serial.Message;
+using Signal.Core.Domain.DataProviding.Serial.SerialTransmission;
 using Signal.Core.Services;
 
 namespace Signal.Infrastructure.Services.Serial
@@ -12,6 +15,13 @@ namespace Signal.Infrastructure.Services.Serial
         public event EventHandler<ReadingMessageReceivedEventArgs> DataReceived;
 
         private SerialPort _serialPort;
+        private readonly SerialTransmission _serialTransmission;
+
+        public SerialDataProvider(SerialTransmission serialTransmission)
+        {
+            _serialTransmission = serialTransmission;
+            _serialTransmission.FullMessagesReceived += OnFullMessagesReceived;
+        }
 
         public void Open(string portName)
         {
@@ -40,8 +50,16 @@ namespace Signal.Infrastructure.Services.Serial
             var message = _serialPort.ReadExisting();
             Console.WriteLine(message);
             
-            var readingsMessage = JsonConvert.DeserializeObject<ReadingsMessage>(message);
-            var readingsEvent = new ReadingMessageReceivedEventArgs() {ReadingsMessage = readingsMessage};
+            _serialTransmission.ReadNext(message);
+        }
+
+        private void OnFullMessagesReceived(object sender, FullMessageReceivedEventArgs e)
+        {
+            var readingsEvent = new ReadingMessageReceivedEventArgs()
+            {
+                ReadingsMessages = e.ReadingsMessages
+            };
+            
             DataReceived?.Invoke(this, readingsEvent);
         }
     }

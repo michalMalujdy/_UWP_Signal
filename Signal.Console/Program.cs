@@ -4,7 +4,10 @@ using System.Threading.Tasks;
 using Autofac;
 using Signal.Core.Domain;
 using Signal.Core.Domain.DataProviding;
+using Signal.Core.Domain.DataProviding.Serial;
+using Signal.Core.Domain.DataProviding.Serial.SerialTransmission;
 using Signal.Core.Services;
+using Signal.Infrastructure.Services.FileWriter;
 using Signal.Infrastructure.Services.Serial;
 
 class Program 
@@ -17,14 +20,15 @@ class Program
         using (var scope = builder.BeginLifetimeScope())
         {
             var serial = scope.Resolve<Serial>();
-            var session = new RecordingSession(serial);
+            var readingsSaver = scope.Resolve<IReadingsSaver>();
+            var session = new RecordingSession(serial, readingsSaver);
             
             session.Start("COM5");
-            while (true)
-            {
-                Task.Delay(Int32.MaxValue);
-            }
-            session.StopAndSave("abc.csv");
+
+            var task = Task.Run(async () => { await Task.Delay(17000); });
+            task.Wait();
+            
+            session.StopAndSave();
         }
     }
 
@@ -34,6 +38,8 @@ class Program
         
         builder.RegisterType<SerialDataProvider>().As<ISerialDataProvider>();
         builder.RegisterType<Serial>().AsSelf();
+        builder.RegisterType<ReadingsCsvSaver>().As<IReadingsSaver>();
+        builder.RegisterType<SerialTransmission>().AsSelf();
 
         return builder.Build();
     }
