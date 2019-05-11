@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Signal.App"
         mc:Ignorable="d"
-        Title="MainWindow" Height="520" MinHeight="400" Width="250" MinWidth="250">
+        Title="Signal" Height="520" MinHeight="400" Width="250" MinWidth="250">
+    
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+    
     <Grid Margin="25 0 25 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="25px"></RowDefinition>
@@ -26,15 +31,15 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" FontSize="14" Text="Comment"></TextBlock>
-            <RichTextBox Grid.Row="1" Margin="0 20 0 0"></RichTextBox>
+            <RichTextBox Grid.Row="1" Margin="0 20 0 0" ></RichTextBox>
         </Grid>
         
         <StackPanel Grid.Row="3" Margin="0 40 0 0">
             <StackPanel Orientation="Horizontal">
-                <Ellipse Height="20" Width="20" Fill="Red" VerticalAlignment="Top"></Ellipse>
+                <Ellipse Height="20" Width="20" VerticalAlignment="Top" Fill="Red" Stroke="Black" StrokeThickness="1"></Ellipse>
                 <TextBlock FontSize="14" Text="Not recording" Margin="10 0 0 0"></TextBlock>
             </StackPanel>
-            <Button FontSize="18" Content="Start recording" Padding="10" Margin="0 20 0 0"></Button>
+            <Button FontSize="18" Name="Button" Content="{Binding ButtonText}" Padding="10" Margin="0 20 0 0" Click="Button_OnClick"></Button>
         </StackPanel>
     </Grid>
 </Window>
