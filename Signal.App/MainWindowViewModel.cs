@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media;
 using Autofac;
 using Signal.App.Annotations;
 using Signal.Core.Domain;
@@ -18,14 +20,15 @@ namespace Signal.App
     {
         public event PropertyChangedEventHandler PropertyChanged;
         
+        public string ButtonText => _session.IsRunning ? StopText : StartText;
         private const string StartText = "Start recording";
         private const string StopText = "Stop and save";
 
-        public string ButtonText 
-        {
-            get { return _session.IsRunning ? StopText : StartText; }
-        }
-        
+        public Brush StatusLedBrush => _session.IsRunning ? Brushes.Lime : Brushes.Red;
+        public string StatusLedText => _session.IsRunning ? RunningText : OnHoldText;
+        private const string RunningText = "Recording...";
+        private const string OnHoldText = "Not recording";
+
         private readonly RecordingSession _session;
 
         public MainWindowViewModel()
@@ -62,6 +65,8 @@ namespace Signal.App
                 _session.StopAndSave();
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonText)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusLedBrush)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusLedText)));
         }
     }
 }

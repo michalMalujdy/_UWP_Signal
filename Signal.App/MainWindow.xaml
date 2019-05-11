@@ -36,8 +36,8 @@
         
         <StackPanel Grid.Row="3" Margin="0 40 0 0">
             <StackPanel Orientation="Horizontal">
-                <Ellipse Height="20" Width="20" VerticalAlignment="Top" Fill="Red" Stroke="Black" StrokeThickness="1"></Ellipse>
-                <TextBlock FontSize="14" Text="Not recording" Margin="10 0 0 0"></TextBlock>
+                <Ellipse Height="20" Width="20" VerticalAlignment="Top" Fill="{Binding StatusLedBrush}" Stroke="Black" StrokeThickness="1"></Ellipse>
+                <TextBlock FontSize="14" Text="{Binding StatusLedText}" Margin="10 0 0 0"></TextBlock>
             </StackPanel>
             <Button FontSize="18" Name="Button" Content="{Binding ButtonText}" Padding="10" Margin="0 20 0 0" Click="Button_OnClick"></Button>
         </StackPanel>
