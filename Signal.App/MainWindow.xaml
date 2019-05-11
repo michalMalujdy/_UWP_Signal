@@ -1,0 +1,40 @@
+﻿<Window x:Class="Signal.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Signal.App"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="520" MinHeight="400" Width="250" MinWidth="250">
+    <Grid Margin="25 0 25 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25px"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="25px"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="1">
+            <TextBlock FontSize="14" Text="Select serial port"></TextBlock>
+            <ComboBox Margin="0 20 0 0"></ComboBox>
+        </StackPanel>
+        
+        <Grid Grid.Row="2" Margin="0 40 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" FontSize="14" Text="Comment"></TextBlock>
+            <RichTextBox Grid.Row="1" Margin="0 20 0 0"></RichTextBox>
+        </Grid>
+        
+        <StackPanel Grid.Row="3" Margin="0 40 0 0">
+            <StackPanel Orientation="Horizontal">
+                <Ellipse Height="20" Width="20" Fill="Red" VerticalAlignment="Top"></Ellipse>
+                <TextBlock FontSize="14" Text="Not recording" Margin="10 0 0 0"></TextBlock>
+            </StackPanel>
+            <Button FontSize="18" Content="Start recording" Padding="10" Margin="0 20 0 0"></Button>
+        </StackPanel>
+    </Grid>
+</Window>
