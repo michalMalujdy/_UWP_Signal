@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Signal.App"
         mc:Ignorable="d"
-        Title="Signal" Height="520" MinHeight="400" Width="250" MinWidth="250">
+        Title="Signal" Height="520" MinHeight="400" Width="250" MinWidth="250" Icon="Resources/logo.ico">
     
     <Window.DataContext>
         <local:MainWindowViewModel/>
