@@ -39,7 +39,7 @@
                 <Ellipse Height="20" Width="20" VerticalAlignment="Top" Fill="{Binding StatusLedBrush}" Stroke="Black" StrokeThickness="1"></Ellipse>
                 <TextBlock FontSize="14" Text="{Binding StatusLedText}" Margin="10 0 0 0"></TextBlock>
             </StackPanel>
-            <Button FontSize="18" Name="Button" Content="{Binding ButtonText}" Padding="10" Margin="0 20 0 0" Click="Button_OnClick" IsEnabled="False"></Button>
+            <Button FontSize="18" Name="Button" Content="{Binding ButtonText}" Padding="10" Margin="0 20 0 0" Click="Button_OnClick" IsEnabled="{Binding ButtonEnabled}"></Button>
         </StackPanel>
     </Grid>
 </Window>

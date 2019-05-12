@@ -22,7 +22,19 @@ namespace Signal.App
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICollection<string> AvailablePorts => _portsService.GetAvailablePorts();
-        public string SelectedPort { get; set; }
+
+        private string _selectedPort;
+        public string SelectedPort
+        {
+            get => _selectedPort;
+            set
+            {
+                _selectedPort = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonEnabled)));
+            }
+        }
+
+        public bool ButtonEnabled => !string.IsNullOrWhiteSpace(SelectedPort);
         
         public string ButtonText => _session.IsRunning ? StopText : StartText;
         private const string StartText = "Start recording";
