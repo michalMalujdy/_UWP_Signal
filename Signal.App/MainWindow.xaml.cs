@@ -1,11 +1,7 @@
 ﻿using System.Windows;
-using Autofac;
-using Signal.Core.Domain;
-using Signal.Core.Domain.DataProviding.Serial;
-using Signal.Core.Domain.DataProviding.Serial.SerialTransmission;
-using Signal.Core.Services;
-using Signal.Infrastructure.Services.FileWriter;
-using Signal.Infrastructure.Services.Serial;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
 
 namespace Signal.App
 {
@@ -22,6 +18,15 @@ namespace Signal.App
         private void Button_OnClick(object sender, RoutedEventArgs e)
         {
             ViewModel.OnButtonClick(this, e);
+        }
+
+        private void CommentOnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var text = new TextRange(CommentRichTextBox.Document.ContentStart, CommentRichTextBox.Document.ContentEnd)
+                .Text
+                .Trim();
+            
+            ViewModel.CommentText = text;
         }
     }
 }

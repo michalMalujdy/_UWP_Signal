@@ -31,7 +31,7 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" FontSize="14" Text="Comment"></TextBlock>
-            <RichTextBox Grid.Row="1" Margin="0 20 0 0" ></RichTextBox>
+            <RichTextBox Grid.Row="1" Margin="0 20 0 0" Name="CommentRichTextBox" TextChanged="CommentOnTextChanged"></RichTextBox>
         </Grid>
         
         <StackPanel Grid.Row="3" Margin="0 40 0 0">

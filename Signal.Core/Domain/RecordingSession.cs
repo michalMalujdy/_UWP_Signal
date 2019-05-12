@@ -32,7 +32,7 @@ namespace Signal.Core.Domain
             _serial.DataProvider.DataReceived += DataReceivedHandler;
         }
 
-        public void StopAndSave()
+        public void StopAndSave(string comment = null)
         {
             if (!IsRunning)
                 return;
@@ -40,7 +40,7 @@ namespace Signal.Core.Domain
             _serial.DataProvider.DataReceived -= DataReceivedHandler;
             _serial.DataProvider.Close();
             
-            _readingsSaver.Save($"./sensors_saved_data/{GetDirectoryName()}", ReadingsMessages, "Lorem ipsum\nDolos amen");
+            _readingsSaver.Save($"./sensors_saved_data/{GetDirectoryName()}", ReadingsMessages, comment);
             
             ReadingsMessages = new List<ReadingsMessage>();
             IsRunning = false;

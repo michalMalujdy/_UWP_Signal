@@ -29,6 +29,8 @@ namespace Signal.App
         private const string RunningText = "Recording...";
         private const string OnHoldText = "Not recording";
 
+        public string CommentText { get; set; }
+
         private readonly RecordingSession _session;
 
         public MainWindowViewModel()
@@ -42,7 +44,6 @@ namespace Signal.App
                 _session = new RecordingSession(serial, readingsSaver);
             }
         }
-        
 
         private static IContainer SetupDependencyInjectionBuilder()
         {
@@ -62,11 +63,16 @@ namespace Signal.App
                 _session.Start("COM5");
             
             else
-                _session.StopAndSave();
+                _session.StopAndSave(GetComment());
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonText)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusLedBrush)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusLedText)));
+        }
+
+        private string GetComment()
+        {
+            return string.IsNullOrEmpty(CommentText) ? null : CommentText;
         }
     }
 }
