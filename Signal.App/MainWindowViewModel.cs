@@ -29,7 +29,14 @@ namespace Signal.App
             get => _selectedPort;
             set
             {
+                if (_selectedPort != value && _session.ReadingsMessages.Count > 0)
+                {
+                    _session.StopAndSave(CommentText);
+                }
+                
                 _selectedPort = value;
+                
+                UpdateRecordingSessionProperties();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonEnabled)));
             }
         }
@@ -63,6 +70,12 @@ namespace Signal.App
             }
         }
 
+        ~MainWindowViewModel()
+        {
+            if(_session.ReadingsMessages.Count > 0)
+                _session.StopAndSave(CommentText);
+        }
+
         private static IContainer SetupDependencyInjectionBuilder()
         {
             var builder = new ContainerBuilder();
@@ -85,9 +98,7 @@ namespace Signal.App
             else
                 _session.StopAndSave(GetComment());
 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonText)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusLedBrush)));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusLedText)));
+            UpdateRecordingSessionProperties();
         }
 
         private string GetComment()
@@ -98,6 +109,13 @@ namespace Signal.App
         private void OnAvailablePortsChanged(object sender, AvailablePortsChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AvailablePorts)));
+        }
+
+        private void UpdateRecordingSessionProperties()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonText)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusLedBrush)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StatusLedText)));
         }
     }
 }
