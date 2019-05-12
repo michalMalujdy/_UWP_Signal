@@ -27,7 +27,7 @@ namespace Signal.Infrastructure.Services.Serial
         {
             _serialPort = new SerialPort()
             {
-                BaudRate = 9600,
+                BaudRate = 115200,
                 PortName = portName,
                 Handshake = Handshake.None,
                 RtsEnable = true,
