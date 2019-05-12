@@ -31,7 +31,11 @@ namespace Signal.App
 
         private void PortsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ViewModel.SelectedPort = PortsComboBox.SelectedValue?.ToString();
+            var selectedValue = PortsComboBox.SelectedValue?.ToString();
+
+            ViewModel.SelectedPort = selectedValue;
+
+            Button.IsEnabled = !string.IsNullOrWhiteSpace(selectedValue);
         }
     }
 }
