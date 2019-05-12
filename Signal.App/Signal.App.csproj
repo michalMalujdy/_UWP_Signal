@@ -101,7 +101,6 @@
       <Resource Include="Resources\logo.ico">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
-      <Content Include="Resources\logo.png" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
