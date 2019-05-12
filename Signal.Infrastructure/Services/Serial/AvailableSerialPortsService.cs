@@ -1,11 +1,12 @@
 using System;
 using System.IO.Ports;
+using Signal.Core.Services.IAvailableSerialPorts;
 
 namespace Signal.Infrastructure.Services.Serial
 {
-    public class PortsDetectionService
+    public class AvailableSerialPortsService : IAvailableSerialPortsService
     {
-        public PortsDetectionService()
+        public AvailableSerialPortsService()
         {
             var ports = SerialPort.GetPortNames();
             
