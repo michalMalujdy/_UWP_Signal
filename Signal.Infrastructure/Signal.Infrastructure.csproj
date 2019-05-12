@@ -44,7 +44,7 @@
     <ItemGroup>
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Services\FileWriter\ReadingsCsvSaver.cs" />
-        <Compile Include="Services\Serial\PortsDetectionService.cs" />
+        <Compile Include="Services\Serial\AvailableSerialPortsService.cs" />
         <Compile Include="Services\Serial\SerialDataProvider.cs" />
     </ItemGroup>
     <ItemGroup>

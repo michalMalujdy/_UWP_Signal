@@ -10,6 +10,7 @@ using Signal.Core.Domain;
 using Signal.Core.Domain.DataProviding.Serial;
 using Signal.Core.Domain.DataProviding.Serial.SerialTransmission;
 using Signal.Core.Services;
+using Signal.Core.Services.IAvailableSerialPorts;
 using Signal.Infrastructure.Services.FileWriter;
 using Signal.Infrastructure.Services.Serial;
 using IContainer = Autofac.IContainer;
@@ -19,6 +20,9 @@ namespace Signal.App
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ICollection<string> AvailablePorts => _portsService.GetAvailablePorts();
+        public string SelectedPort { get; set; }
         
         public string ButtonText => _session.IsRunning ? StopText : StartText;
         private const string StartText = "Start recording";
@@ -32,6 +36,7 @@ namespace Signal.App
         public string CommentText { get; set; }
 
         private readonly RecordingSession _session;
+        private readonly IAvailableSerialPortsService _portsService;
 
         public MainWindowViewModel()
         {
@@ -39,9 +44,10 @@ namespace Signal.App
 
             using (var scope = builder.BeginLifetimeScope())
             {
-                var serial = scope.Resolve<Serial>();
-                var readingsSaver = scope.Resolve<IReadingsSaver>();
-                _session = new RecordingSession(serial, readingsSaver);
+                _session = scope.Resolve<RecordingSession>();
+                _portsService = scope.Resolve<IAvailableSerialPortsService>();
+                
+                _portsService.AvailablePortsChanged += OnAvailablePortsChanged;
             }
         }
 
@@ -50,9 +56,11 @@ namespace Signal.App
             var builder = new ContainerBuilder();
         
             builder.RegisterType<SerialDataProvider>().As<ISerialDataProvider>();
+            builder.RegisterType<AvailableSerialPortsService>().As<IAvailableSerialPortsService>();
             builder.RegisterType<Serial>().AsSelf();
             builder.RegisterType<ReadingsCsvSaver>().As<IReadingsSaver>();
             builder.RegisterType<SerialTransmission>().AsSelf();
+            builder.RegisterType<RecordingSession>().AsSelf();
 
             return builder.Build();
         }
@@ -60,7 +68,7 @@ namespace Signal.App
         public void OnButtonClick(object sender, RoutedEventArgs e)
         {
             if (!_session.IsRunning)
-                _session.Start("COM5");
+                _session.Start(SelectedPort);
             
             else
                 _session.StopAndSave(GetComment());
@@ -73,6 +81,11 @@ namespace Signal.App
         private string GetComment()
         {
             return string.IsNullOrEmpty(CommentText) ? null : CommentText;
+        }
+
+        private void OnAvailablePortsChanged(object sender, AvailablePortsChangedEventArgs e)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AvailablePorts)));
         }
     }
 }

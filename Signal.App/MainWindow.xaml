@@ -22,7 +22,7 @@
         
         <StackPanel Grid.Row="1">
             <TextBlock FontSize="14" Text="Select serial port"></TextBlock>
-            <ComboBox Margin="0 20 0 0"></ComboBox>
+            <ComboBox Name="PortsComboBox" SelectionChanged="PortsComboBox_OnSelectionChanged" ItemsSource="{Binding AvailablePorts}" Margin="0 20 0 0"></ComboBox>
         </StackPanel>
         
         <Grid Grid.Row="2" Margin="0 40 0 0">

@@ -28,5 +28,10 @@ namespace Signal.App
             
             ViewModel.CommentText = text;
         }
+
+        private void PortsComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ViewModel.SelectedPort = PortsComboBox.SelectedValue?.ToString();
+        }
     }
 }

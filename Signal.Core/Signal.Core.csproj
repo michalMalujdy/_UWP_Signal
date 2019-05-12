@@ -51,6 +51,8 @@
         <Compile Include="Domain\DataSaving\ReadingsSaver.cs" />
         <Compile Include="Domain\RecordingSession.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Services\IAvailableSerialPorts\AvailablePortsChangedEventArgs.cs" />
+        <Compile Include="Services\IAvailableSerialPorts\IAvailableSerialPortsService.cs" />
         <Compile Include="Services\IReadingsSaver.cs" />
         <Compile Include="Services\ISerialDataProvider.cs" />
     </ItemGroup>
